@@ -65,20 +65,18 @@ class WorksheetEvents:
         except Exception as e:
             carb.log_error('Could not detect cell changes' + e)
 
-        # 2. If so, check if the excel value is different from the scene value
-        stage = omni.usd.get_context().get_stage()
-
-        # 3. get prim path from excel
+        # 2. get prim path from excel
         prim_path_cell_address = r"C" + address[3]
         prim_path = WorksheetEvents._excel_worksheet.Range(prim_path_cell_address).Value
         
+        stage = omni.usd.get_context().get_stage()
         prim = stage.GetPrimAtPath(prim_path)
 
         if not prim.IsValid():
             carb.log_error("Can't find prim at path")
             return
 
-        # 4. move prim to new coordinates        
+        # 3. move prim to new coordinates        
         new_value = WorksheetEvents._excel_worksheet.Range(address).Value
 
         translate = prim.GetAttribute("xformOp:translate").Get()
@@ -99,7 +97,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
         with self._window.frame:
             with ui.VStack():
 
-                self._sheet_path = ui.SimpleStringModel(r"C:\Users\ebowman\source\repos\ExcelVerse\Warehouse_BOM.xlsx")
+                self._sheet_path = ui.SimpleStringModel(r"C:\Warehouse_BOM.xlsx")
                 with ui.HStack(style={"margin": 5}, height=40):
                     ui.Label("Spreadsheet Path:", width=50)
                     ui.StringField(self._sheet_path, width=500)
@@ -134,25 +132,27 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
         # Link to Scene
         self._stage = omni.usd.get_context().get_stage()
         
+        watcher = omni.usd.get_watcher()
+
         self.prim_1 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C3').Value)        
         if self.prim_1.IsValid():
             translate_attr = self.prim_1.GetAttribute("xformOp:translate")
-            self.watcher1 = omni.usd.get_watcher().subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
+            self.watcher1 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
         
         self.prim_2 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C4').Value)
         if self.prim_2.IsValid():
             translate_attr = self.prim_2.GetAttribute("xformOp:translate")
-            self.watcher2 = omni.usd.get_watcher().subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
+            self.watcher2 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
 
         self.prim_3 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C5').Value)        
         if self.prim_3.IsValid():
             translate_attr = self.prim_3.GetAttribute("xformOp:translate")
-            self.watcher3 = omni.usd.get_watcher().subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
+            self.watcher3 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
         
         self.prim_4 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C6').Value)
         if self.prim_4.IsValid():
             translate_attr = self.prim_4.GetAttribute("xformOp:translate")
-            self.watcher4 = omni.usd.get_watcher().subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
+            self.watcher4 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
 
     def on_Disconnect_Click(self):
         # Share in livestream
