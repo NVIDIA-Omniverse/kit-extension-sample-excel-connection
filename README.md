@@ -1,10 +1,10 @@
-# Excel Connection Tutorial
+# Excel Connection Sample and Tutorial
+
+This repository includes a working tutorial (source code and assets) that can synchronize data between NVIDIA Omniverse and Microsoft Excel. Please find a tutorial below that explains the code and how you can expand upon it.
 
 ## Introduction
 
 Follow along with this tutorial to write your own extension that can transfer data back and forth between Microsoft Excel and NVIDIA Omniverse. This tutorial not only demonstrates how to connect Excel and Omniverse specifically, but also serves as a template you can use to connect to other COM applications such as other microsoft office applications as well as CATIA V5. It can also serve as a starting point to connect to applications that have python, .NET or other libraries available.
-
-Full sample source code along with the scene used in this tutorial can be accessed [here](https://gitlab-master.nvidia.com/omniverse-exchange/omni-sample-excel_connection) REPLACE INTERNAL GITLAB LINK WITH EXTERNAL GITHUB LINK
 
 ## User Interface
 
