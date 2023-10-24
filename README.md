@@ -22,7 +22,7 @@ If you do not have *Excel* installed, it can be purchased and downloaded [here](
 3. In the *Extension Manager Window* click on the *hamburger menu* &rarr; *settings*.
 4. In the settings page there is a list of *Extension Search Paths*. Click on the *plus* button and add the cloned repo's `exts` subfolder. If you used the example clone path, the `exts` filder would be here: `C:\projects\kit-extension-sample-msexcel\exts`
 
-![Extension Manager Window](/images/add-ext-search-path.gif)
+![Extension Manager Window](/Images/add-ext-search-path.gif)
 
 5. Now you can find `omni.sample.excel_connection` extension in the top left search bar. Select and enable it.
 6. The "Excel Connection" window will pop up. *Extension Manager* watches for any file changes. You can try changing some code in this extension and see them applied immediately with a hotreload.
@@ -35,13 +35,13 @@ Use the *Omniverse* app installed previously to open *Warehouse_Scene.usd* inclu
 
 Copy the path of *Warehouse_BOM.xlsx* included in the *Assets* folder of the repository and paste it into the *Spreadsheet Path* field of the *Excel Connection* extension as shown in the image below: 
 
-![Excel Connection Window](/images/Excel_Connection_Window.png)
+![Excel Connection Window](/Images/Excel_Connection_Window.png)
 
 ### Connect Omniverse to Microsoft Excel
 
 Finally, click the *Connect* button in the *Excel Connection* Window. You can now move a pallet in Omniverse and see its position values change in *Excel* or you can change position values in *Excel* and see pallets move in *Omniverse*.
 
-![Excel Connected](/images/Excel_Connected.gif)
+![Excel Connected](/Images/Excel_Connected.gif)
 
 Note: Sometimes *Excel* instances do not close completely and this causes unexpected behavior; This can happen if the extension is reloaded without clicking on the disconnect button. If the connection is not working well, open the windows task manager and manually close all open excel applications.
 
