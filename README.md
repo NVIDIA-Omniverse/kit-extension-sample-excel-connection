@@ -2,7 +2,50 @@
 
 This repository includes a working tutorial (source code and assets) that can synchronize data between NVIDIA Omniverse and Microsoft Excel. Please find a tutorial below that explains the code and how you can expand upon it.
 
-## Introduction
+## Using the sample
+
+In order to use this sample you must install *Microsoft Excel*, install *Omniverse*, clone this repository, and add configure *Omniverse* to include the provided extension. Then the extension can be used as described below.
+
+### Install Microsoft Excel
+
+If you do not have *Excel* installed, it can be purchased and downloaded [here](https://www.microsoft.com/en-us/microsoft-365/excel).
+
+### Install Omniverse Launcher and an Omniverse App
+
+1. Install *Omniverse Launcher*: [download](https://www.nvidia.com/en-us/omniverse/download)
+2. Install and launch an *Omniverse* app through the launcher such as *Omniverse Code*.
+
+### Add a new extension to your *Omniverse App*
+
+1. Fork and clone this repo, for example in `C:\projects\kit-extension-sample-msexcel`
+2. In the *Omniverse App* open extension manager: *Window* &rarr; *Extensions*.
+3. In the *Extension Manager Window* click on the *hamburger menu* &rarr; *settings*.
+4. In the settings page there is a list of *Extension Search Paths*. Click on the *plus* button and add the cloned repo's `exts` subfolder. If you used the example clone path, the `exts` filder would be here: `C:\projects\kit-extension-sample-msexcel\exts`
+
+![Extension Manager Window](/images/add-ext-search-path.gif)
+
+5. Now you can find `omni.sample.excel_connection` extension in the top left search bar. Select and enable it.
+6. The "Excel Connection" window will pop up. *Extension Manager* watches for any file changes. You can try changing some code in this extension and see them applied immediately with a hotreload.
+
+### Open the Scene
+
+Use the *Omniverse* app installed previously to open *Warehouse_Scene.usd* included in the *Assets* folder of the repository.
+
+### Enter the Spreadsheet Path
+
+Copy the path of *Warehouse_BOM.xlsx* included in the *Assets* folder of the repository and paste it into the *Spreadsheet Path* field of the *Excel Connection* extension as shown in the image below: 
+
+![Excel Connection Window](/images/Excel_Connection_Window.png)
+
+### Connect Omniverse to Microsoft Excel
+
+Finally, click the *Connect* button in the *Excel Connection* Window. You can now move a pallet in Omniverse and see its position values change in *Excel* or you can change position values in *Excel* and see pallets move in *Omniverse*.
+
+![Excel Connected](/images/Excel_Connected.gif)
+
+Note: Sometimes *Excel* instances do not close completely and this causes unexpected behavior; This can happen if the extension is reloaded without clicking on the disconnect button. If the connection is not working well, open the windows task manager and manually close all open excel applications.
+
+## Tutorial Introduction
 
 Follow along with this tutorial to write your own extension that can transfer data back and forth between Microsoft Excel and NVIDIA Omniverse. This tutorial not only demonstrates how to connect Excel and Omniverse specifically, but also serves as a template you can use to connect to other COM applications such as other microsoft office applications as well as CATIA V5. It can also serve as a starting point to connect to applications that have python, .NET or other libraries available.
 
