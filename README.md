@@ -1,6 +1,6 @@
 # Excel Connection Sample and Tutorial
 
-This repository includes a working tutorial (source code and assets) that can synchronize data between NVIDIA Omniverse and Microsoft Excel. Please find a tutorial below that explains the code and how you can expand upon it.
+This repository includes a working sample (source code and assets) that can synchronize data between NVIDIA Omniverse and Microsoft Excel. This readme containes two major sections. The first section explains how to use the sample as-is. The second section is a tutorial that explains how the sample was developed. 
 
 ## Using the sample
 
@@ -426,6 +426,6 @@ If either of the values is different, the code continues with the following snip
 
 This uses excel's COM api to change the cell values of interest.
 
-## Conculsion
+## Conclusion
 
 This tutorial has demonstrated how to connect an Excel spreadsheet to NVIDIA Omniverse through a python extension. It has done this through COM libraries, but the general approach can be applied to many apps and technologies.
