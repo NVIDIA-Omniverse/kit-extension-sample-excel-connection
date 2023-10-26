@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import omni.ext
 import omni.ui as ui
 import omni.usd
@@ -21,6 +20,7 @@ import carb
 import usd
 from pxr import Tf
 from pxr import Usd, Sdf, UsdShade
+
 import re
 
 # In order to work with com you will need to import pywin32
@@ -86,7 +86,6 @@ class WorksheetEvents:
             translate[1] = new_value
         
         prim.GetAttribute("xformOp:translate").Set(translate)
-
 
 class OmniSampleExcel_connectionExtension(omni.ext.IExt):
     def on_startup(self, ext_id):
