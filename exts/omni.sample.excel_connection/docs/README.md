@@ -1,4 +1,3 @@
 # Python Extension Example [omni.sample.excel_connection]
 
-This is an example of pure python Kit extension. It is intended to be copied and serve as a template to create new extensions.
-
+This is a sample extension that connects NVIDIA Omniverse to Microsoft Excel. The full source code along with assets can be found [here](https://github.com/NVIDIA-Omniverse/kit-extension-sample-excel-connection).

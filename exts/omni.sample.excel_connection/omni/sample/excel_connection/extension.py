@@ -96,7 +96,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
         with self._window.frame:
             with ui.VStack():
 
-                self._sheet_path = ui.SimpleStringModel(r"C:\projects\kit-extension-sample-msexcel\Assets\Warehouse_BOM.xlsx")
+                self._sheet_path = ui.SimpleStringModel(r"C:\projects\kit-extension-sample-excel-connection\Assets\Warehouse_BOM.xlsx")
                 with ui.HStack(style={"margin": 5}, height=40):
                     ui.Label("Spreadsheet Path:", width=50)
                     ui.StringField(self._sheet_path, width=500)
