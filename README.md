@@ -330,6 +330,8 @@ This is a great point to pause and check your work. You should be able to launch
 Working with Omniverse in Python is more straightforward than working with COM APIs in Python because Omniverse was designed to work with Python. In Omniverse we can deliberately subscribe to changes in a specific prim attribute as shown below:
 
 ```Python
+self._stage = omni.usd.get_context().get_stage()
+
 watcher = omni.usd.get_watcher()
 
 self.prim_1 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C3').Value)        
@@ -414,7 +416,7 @@ y_address = "E" + str(row)
 excel_y = self._excel_worksheet.Range(y_address).Value
 
 # No change in value
-if Excel_x == translate[0] and Excel_y == translate[1]:
+if excel_x == translate[0] and excel_y == translate[1]:
     return
 ```
 
