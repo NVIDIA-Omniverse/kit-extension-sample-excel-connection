@@ -49,7 +49,7 @@ Finally, click the *Connect* button in the *Excel Connection* Window. You can no
 
 Follow along with this tutorial to write your own extension that can transfer data back and forth between Microsoft Excel and NVIDIA Omniverse. This tutorial not only demonstrates how to connect Excel and Omniverse specifically, but also serves as a template you can use to connect to other COM applications such as other Microsoft Office Applications as well as CATIA V5. It can also serve as a starting point to connect to applications that have Python, .NET or other libraries available.
 
-### User Interface
+### Step 1: User Interface
 
 To get started, build a new extension from the extension template and open the `extension.py` file as demonstrated in [this video](https://www.youtube.com/watch?v=eGxV_PGNpOg).
 
@@ -118,7 +118,7 @@ def on_Disconnect_Click(self):
 
 And so, with just a few lines of code the user interface for the Excel connector is complete. Next we will add the dependencies required to call the Excel API from within the extension.
 
-### Adding the `Win32Com` Dependencies
+### Step 2: Adding the `Win32Com` Dependencies
 
 Many applications have automation API libraries. These libraries come in a wide variety of languages and formats; this sample is helpful for any libraries that can be accessed from Python. If the libraries are Python libraries, which is common, this is very straightforward. .NET libraries are also very common. While not quite as simple to import as Python libraries, .NET libraries can be brought in by using the Python.NET library. COM libraries are a bit trickier to use, which is one reason they were chosen for this tutorial. Hopefully demonstrating how to use COM libraries will serve as a head start for those who want to use Python, .NET, COM or other technologies.
 
@@ -167,7 +167,7 @@ import win32com.client
 
 With that, all libraries needed to work with COM APIs have been installed. In the next step we will use this library to access the Excel application.
 
-### Connecting to the Excel Application
+### Step 3: Connecting to the Excel Application
 
 The sample connects to Excel in the `on_Connect_Click` function using the following snippet:
 
@@ -197,7 +197,7 @@ Now that the extension can open the Excel spreadsheet, the next section will exp
 > **_NOTE:_** COM libraries do not typically have Python documentation. In order to learn how to automate these applications, it is recommended you use their VBA documentation and adapt it to Python. The Excel VBA documentation can be found [here](https://learn.microsoft.com/en-us/office/vba/api/overview/excel). It can also be helpful to prototype functionality in the VBA environment and then adapte it to Python.
 
 
-### Subscribing to Changes from Excel
+### Step 4: Subscribing to Changes from Excel
 
 If you have done Excel automation with VBA, you have probably used the `Worksheet_Change` function to perform actions whenever a user edits a worksheet. We do the same thing in this sample in four steps. First, identify the class and event name you would like to subscribe to. In the case of Excel we can use the VBA object browser to do this. For this sample, we want to listen for changes to a worksheet. We find the `Worksheet` class and if you look there is a `Change` event as shown in the image below:
 
@@ -239,7 +239,7 @@ self._excel_events = win32com.client.WithEvents(self._excel_worksheet, Worksheet
 
 Now that we have subscribed to changes from the Excel spreadsheet, in the next section we will take action upon those changes.
 
-### Responding to Changes from Excel
+### Step 5: Responding to Changes from Excel
 
 First, in this section we will be working with the Omniverse scene and we will use regular expressions to compare string. So, we will need to import the following libraries:
 
@@ -254,7 +254,7 @@ with those libraries imported, we will now perform the following steps in the On
 2. Get the prim
 3. Move the prim
 
-#### Check Change Address
+#### Step 5.1: Check Change Address
 
 The first step is to check whether the address of the changed cell is one we are tracking. This is done with the following snippet:
 
@@ -271,7 +271,7 @@ except Exception as e:
 
 In this snippet we create a regular expression that will match addresses of import and then check whether the changed address matches that pattern. If it does not match we do not continue any further. 
 
-#### Get Prim
+#### Step 5.2: Get Prim
 
 The second step is to find the prim path that has been effected by the change. This has been made easy in this sample by storing the prim's path in the spreadhseet to be retrieved later as follows:
 
@@ -303,7 +303,7 @@ WorksheetEvents._excel_worksheet = self._excel_worksheet
 self._excel_events = win32com.client.WithEvents(self._excel_worksheet, WorksheetEvents)
 ```
 
-#### Move Prim
+#### Step 5.3: Move Prim
 
 Finally, we will move the prim to its new location with this snippet:
 
@@ -325,7 +325,7 @@ First, read the new position from Excel, second read the current position from O
 This is a great point to pause and check your work. You should be able to launch the extension and if you change the position of a prim in Excel, the prim should move in Omniverse. In the next section we will subscribe to Omniverse changes so that we can get data flowing back in the other direction. 
 
 
-### Subscribing to Changes from Omniverse
+### Step 6: Subscribing to Changes from Omniverse
 
 Working with Omniverse in Python is more straightforward than working with COM APIs in Python because Omniverse was designed to work with Python. In Omniverse we can deliberately subscribe to changes in a specific prim attribute as shown below:
 
@@ -380,7 +380,7 @@ def _translate_changed(self, *args):
 
 With the subscription made, the final step in the tutorial is to respond to changes that come from Omniverse and update Excel.
 
-### Responding to Changes from Omniverse
+### Step 7: Responding to Changes from Omniverse
 
 Responding to changes from Omniverse is very similar to responding to changes from Excel, but has important differences:
 
