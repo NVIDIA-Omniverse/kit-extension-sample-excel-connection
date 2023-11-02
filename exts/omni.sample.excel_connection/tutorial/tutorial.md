@@ -25,9 +25,6 @@ Follow along with this tutorial to write your own extension that can transfer da
 To get started, build a new extension from the extension template as demonstrated in [this video](https://www.youtube.com/watch?v=eGxV_PGNpOg) and open the `extension.py` file.
 
 From there, replace the code in `extension.py` with the code below: 
-
-<details>
-    <summary>Click to Reveal Code</summary>
     
 ```Python
 import omni.ext
@@ -85,8 +82,6 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
         # Step 9
         pass
 ```
-</details>  
-&nbsp
 
 So far, the extension only contains comments with step numbers that correspond with the steps in this tutorial as well as the minimum code needed to launch an extension with a window. The `OmniSampleExcel_connectionExtension` class encapsulates the extension itself. The `on_startup` function runs when the extension is loaded. Currently, this function simply creates an empty window with `Excel Connection` as its title. 
 
