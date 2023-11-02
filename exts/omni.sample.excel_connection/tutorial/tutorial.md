@@ -397,7 +397,7 @@ If you have spent time automating Excel with VBA or .NET, this code might be fam
 
 > **_NOTE:_** COM libraries do not typically have Python documentation. In order to learn how to automate these applications, it is recommended you use their VBA documentation and adapt it to Python. The Excel VBA documentation can be found [here](https://learn.microsoft.com/en-us/office/vba/api/overview/excel). It can also be helpful to prototype functionality in the VBA environment and then adapt it to Python. The VBA Object browser is another tool that can help you identify API elements which can be accessed from an application's COM libraries.
 
-Saving the file at this point should launch the extension and let you see your progress. To view the full code up until this point, click to expand the item below. 
+Saving the file at this point should launch the extension and let you see your progress. Clicking the `Connect` button should open the Excel spreadsheet listed in the `Spreadsheet Path` string field. To view the full code up until this point, click to expand the item below. 
 
 <details>
     <summary>Click to Reveal Code</summary>
