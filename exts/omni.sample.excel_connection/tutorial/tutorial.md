@@ -227,7 +227,7 @@ omni.kit.pipapi.install("pywin32")
 
 This code snippet installs pip packages that are not distributed with NVIDIA Omniverse, opening up a wide range of possibilities. In this case it installs `pywin32`, a library that allows us to work with COM .dlls that are registered on the user's local machine such as Microsoft Office and CATIA V5. 
 
-> **_Note_**: First-time pip installation of `pywin32` sometimes fails from within the Omniverse environment. If this happens copy the attempted pip command from the console logs and run it in a command prompt.
+> **_Note_**: First-time pip installation of `pywin32` sometimes fails from within the Omniverse environment. If this happens copy the attempted pip command from the information-level console logs and run it in a command prompt.
 
 ### Step 3.2: Configure the `pywin32` Environment
 
