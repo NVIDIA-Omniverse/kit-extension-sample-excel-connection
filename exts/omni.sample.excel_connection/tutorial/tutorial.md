@@ -25,9 +25,6 @@ Follow along with this tutorial to write your own extension that can transfer da
 To get started, build a new extension from the extension template as demonstrated in [this video](https://www.youtube.com/watch?v=eGxV_PGNpOg) and open the `extension.py` file.
 
 From there, replace the code in `extension.py` with the code below: 
-
-<details>
-    <summary>Click to Reveal Code</summary>
     
 ```Python
 import omni.ext
@@ -85,8 +82,6 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
         # Step 9
         pass
 ```
-</details>  
-&nbsp
 
 So far, the extension only contains comments with step numbers that correspond with the steps in this tutorial as well as the minimum code needed to launch an extension with a window. The `OmniSampleExcel_connectionExtension` class encapsulates the extension itself. The `on_startup` function runs when the extension is loaded. Currently, this function simply creates an empty window with `Excel Connection` as its title. 
 
@@ -232,7 +227,7 @@ omni.kit.pipapi.install("pywin32")
 
 This code snippet installs pip packages that are not distributed with NVIDIA Omniverse, opening up a wide range of possibilities. In this case it installs `pywin32`, a library that allows us to work with COM .dlls that are registered on the user's local machine such as Microsoft Office and CATIA V5. 
 
-> **_Note_**: First-time pip installation of `pywin32` sometimes fails from within the Omniverse environment. If this happens copy the attempted pip command from the console logs and run it in a command prompt.
+> **_Note_**: First-time pip installation of `pywin32` sometimes fails from within the Omniverse environment. If this happens copy the attempted pip command from the information-level console logs and run it in a command prompt.
 
 ### Step 3.2: Configure the `pywin32` Environment
 
@@ -402,7 +397,7 @@ If you have spent time automating Excel with VBA or .NET, this code might be fam
 
 > **_NOTE:_** COM libraries do not typically have Python documentation. In order to learn how to automate these applications, it is recommended you use their VBA documentation and adapt it to Python. The Excel VBA documentation can be found [here](https://learn.microsoft.com/en-us/office/vba/api/overview/excel). It can also be helpful to prototype functionality in the VBA environment and then adapt it to Python. The VBA Object browser is another tool that can help you identify API elements which can be accessed from an application's COM libraries.
 
-Saving the file at this point should launch the extension and let you see your progress. To view the full code up until this point, click to expand the item below. 
+Saving the file at this point should launch the extension and let you see your progress. Clicking the `Connect` button should open the Excel spreadsheet listed in the `Spreadsheet Path` string field. To view the full code up until this point, click to expand the item below. 
 
 <details>
     <summary>Click to Reveal Code</summary>
