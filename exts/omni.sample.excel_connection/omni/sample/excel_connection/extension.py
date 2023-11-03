@@ -1,20 +1,35 @@
+# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import omni.ext
 import omni.ui as ui
+
+# Step 6.1
 import omni.usd
-import carb
-import usd
-from pxr import Tf
-from pxr import Usd, Sdf, UsdShade
 import re
 
+# Step 3.1
 # In order to work with com you will need to import pywin32
 import omni.kit.pipapi
-
 omni.kit.pipapi.install("pywin32")
 
+# Step 3.2
 # you also need to set the following environment variables to install pywin32
 import os
 import sys
+import carb
 from pathlib import Path
 import pythonwin.pywin
 
@@ -31,16 +46,22 @@ os.environ["PATH"] = f"{dlls_path};{os.environ['PATH']}"
 carb.log_info(os.environ["PATH"])
 # End of pywin32 installation.
 
+# Step 3.3
 # win32com.client lets you work with com libraries
 import win32com.client
 
+# Step 5.1
 # This class mirrors the events in the com dll you would like to subscribe to
 class WorksheetEvents:
 
+    # Step 6.5
     _excel_worksheet = None
 
+    # Step 5.2
     def OnChange(self, *args):
-        #1. check if changed cell is one we are tracking
+
+        # Step 6.2
+        # check if changed cell is one we are tracking
         try:
             address_pattern = r'\$[DE]\$[3456]'
             address = str(args[0].Address)
@@ -49,20 +70,20 @@ class WorksheetEvents:
         except Exception as e:
             carb.log_error('Could not detect cell changes' + e)
 
-        # 2. If so, check if the excel value is different from the scene value
-        stage = omni.usd.get_context().get_stage()
-
-        # 3. get prim path from excel
+        # Step 6.3
+        # get prim path from excel
         prim_path_cell_address = r"C" + address[3]
         prim_path = WorksheetEvents._excel_worksheet.Range(prim_path_cell_address).Value
         
+        stage = omni.usd.get_context().get_stage()
         prim = stage.GetPrimAtPath(prim_path)
 
         if not prim.IsValid():
             carb.log_error("Can't find prim at path")
             return
 
-        # 4. move prim to new coordinates        
+        # Step 6.4
+        # move prim to new coordinates        
         new_value = WorksheetEvents._excel_worksheet.Range(address).Value
 
         translate = prim.GetAttribute("xformOp:translate").Get()
@@ -73,17 +94,17 @@ class WorksheetEvents:
         
         prim.GetAttribute("xformOp:translate").Set(translate)
 
-
 class OmniSampleExcel_connectionExtension(omni.ext.IExt):
     def on_startup(self, ext_id):
         print("[omni.sample.excel_connection] omni sample excel_connection startup")
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
+        # Step 2.1
         with self._window.frame:
             with ui.VStack():
 
-                self._sheet_path = ui.SimpleStringModel(r"C:\Users\ebowman\source\repos\ExcelVerse\Warehouse_BOM.xlsx")
+                self._sheet_path = ui.SimpleStringModel(r"C:\projects\kit-extension-sample-excel-connection\Assets\Warehouse_BOM.xlsx")
                 with ui.HStack(style={"margin": 5}, height=40):
                     ui.Label("Spreadsheet Path:", width=50)
                     ui.StringField(self._sheet_path, width=500)
@@ -94,8 +115,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                     ui.Button("Disconnect", clicked_fn=self.on_Disconnect_Click, width=300)
                     ui.Spacer()
 
+    # Step 2.2
     def on_Connect_Click(self):
-
+        # Step 4
         # Link to Excel
         self._excel_app = win32com.client.DispatchEx("excel.application")
         self._excel_app.Visible = True
@@ -111,35 +133,41 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
         except:
             carb.log_info("Could not find Worksheets attribute")
             return
-
+        
+        # Step 6.6
         WorksheetEvents._excel_worksheet = self._excel_worksheet
         self._excel_events = win32com.client.WithEvents(self._excel_worksheet, WorksheetEvents)
         
+        # Step 7.1
         # Link to Scene
         self._stage = omni.usd.get_context().get_stage()
         
+        watcher = omni.usd.get_watcher()
+
         self.prim_1 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C3').Value)        
         if self.prim_1.IsValid():
             translate_attr = self.prim_1.GetAttribute("xformOp:translate")
-            self.watcher1 = omni.usd.get_watcher().subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
+            self.watcher1 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
         
+        # Step 7.2
         self.prim_2 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C4').Value)
         if self.prim_2.IsValid():
             translate_attr = self.prim_2.GetAttribute("xformOp:translate")
-            self.watcher2 = omni.usd.get_watcher().subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
+            self.watcher2 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
 
         self.prim_3 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C5').Value)        
         if self.prim_3.IsValid():
             translate_attr = self.prim_3.GetAttribute("xformOp:translate")
-            self.watcher3 = omni.usd.get_watcher().subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
+            self.watcher3 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
         
         self.prim_4 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C6').Value)
         if self.prim_4.IsValid():
             translate_attr = self.prim_4.GetAttribute("xformOp:translate")
-            self.watcher4 = omni.usd.get_watcher().subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
+            self.watcher4 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
 
+    # Step 2.2
     def on_Disconnect_Click(self):
-        # Share in livestream
+        # Step 9
         self._excel_events = None
         self._excel_worksheet = None
 
@@ -153,8 +181,10 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                 self._excel_app.Application.Quit()
                 self._excel_app = None
 
+    # Step 7.3
     def _translate_changed(self, *args):
-        # 1. Check if the translation in excel is different
+        # Step 8.1
+        # Check if the translation in excel is different
         translate_attribute = self._stage.GetAttributeAtPath(args[0])
         translate = translate_attribute.Get()
         prim_path = translate_attribute.GetPrimPath()
@@ -183,13 +213,13 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
         if excel_x == translate[0] and excel_y == translate[1]:
             return
 
-        # 2. If so change it.
+        # Step 8.2
+        # If so change it.
         self._excel_worksheet.Range(x_address).Value = translate[0]
         self._excel_worksheet.Range(y_address).Value = translate[1]
 
     def on_shutdown(self):
-
-        # Share in livestream
+        # Step 9
         self._excel_events = None
         self._excel_worksheet = None
 
@@ -202,5 +232,3 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             if self._excel_app is not None:
                 self._excel_app.Application.Quit()
                 self._excel_app = None
-
-        print("[omni.sample.excel_connection] omni sample excel_connection startup")

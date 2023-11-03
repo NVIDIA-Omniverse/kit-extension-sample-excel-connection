@@ -12,7 +12,7 @@ Example of Python only extension
 
 
 .. automodule::"omni.sample.excel_connection"
-    :platform: Windows-x86_64, Linux-x86_64
+    :platform: Windows-x86_64
     :members:
     :undoc-members:
     :show-inheritance:
