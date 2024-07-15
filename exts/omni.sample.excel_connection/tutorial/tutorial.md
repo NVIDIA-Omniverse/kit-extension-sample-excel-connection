@@ -17,10 +17,101 @@ Follow along with this tutorial to write your own extension that can transfer da
 
 ## prerequisites
 
-- [Set up your environment](https://github.com/NVIDIA-Omniverse/ExtensionEnvironmentTutorial/blob/master/Tutorial.md#4-create-a-git-repository)
-- Omniverse Kit 105.1.1 or higher
+- Cloned [Kit App Template](https://github.com/NVIDIA-Omniverse/kit-app-template/tree/main)
+- Created a [Kit Base Editor](https://github.com/NVIDIA-Omniverse/kit-app-template/tree/main/templates/apps/kit_base_editor)
 
-## Step 1: Code Starting Point
+## Step 1: Create an Extension
+
+Kit Applications are a combination of multiple, custome developed, extensions. In this section, you create a base extension from the extension template. Later you will modify this extension to connect Excel to an OpenUSD scene.
+
+### Step 1.1: Open the Terminal
+
+In VSCode **open** a new terminal window, if one is not already open.
+
+![](images/step1-1.png)
+
+### Step 1.2: Create New Extension
+
+In the terminal, run the `template new` command.
+
+**Linux:**
+```bash
+./repo.sh template new
+```
+
+**Windows:**
+```powershell
+.\repo.bat template new
+```
+
+Follow the prompt instructions, Use the arrow keys to move and Enter to select/continue:
+- **? Select with arrow keys what you want to create:** Extension
+- **? Select with arrow keys your desired template:**: Python UI Extension
+- **? Enter name of extension [name-spaced, lowercase, alphanumeric]:**: my.spawn_prims.ext
+- **? Enter extension_display_name:**: Spawn Primitives
+- **? Enter version:**: 0.1.0
+
+### Step 1.3 Add the New Extension to the Application
+
+In VSCode, **go to** `source > apps > [YOUR KIT BASE EDITOR APP].kit`, **scroll** to the `[dependencies]` section.
+
+![](images/step1-3.png)
+
+At the bottom of the `[dependencies]` section, add the following line:
+
+``` json
+"my.spawn_prims.ext" = {} 
+```
+
+**Save** the `.kit` file.
+
+
+### Step 1.3: Run a Build
+
+After a new extension has been added to the .kit file, the application should be rebuilt to ensure extensions are populated to the build directory.
+
+In the terminal, **run** the `build` command.
+
+**Linux:**
+```bash
+./repo.sh build
+```
+
+**Windows:**
+```powershell
+.\repo.bat build
+```
+
+### Step 1.4: Launch the Application
+
+In the terminal, **run** the `launch` command.
+
+**Linux:**
+```bash
+./repo.sh launch
+```
+**Windows:**
+```powershell
+.\repo.bat launch
+```
+
+**? Select with arrow keys which App would you like to launch:** [Select the desired editor application]
+
+***NOTE:* The initial startup may take 5 to 8 minutes as shaders compile for the first time. After initial shader compilation, startup time will reduce dramatically**
+
+Upon launching your Application, a new window appears in your Application, called "Spawn Primitives":
+
+![My window](images/spawnprim_tutorial8.png)
+
+If you click **Add** in *Spawn Primitives*, the `empty` text changes to `count: 1`, indicating that the button was clicked. Pressing **Add** again increases the number for count. Pressing **Reset** will reset it back to `empty`:
+
+![Console log](images/spawnprim_tutorial1.gif)
+
+You use this button later to spawn a primitive.
+
+**DO NOT** close out of the Application.
+
+## Step 2: Code Starting Point
 
 To get started, build a new extension from the extension template as demonstrated in [this video](https://www.youtube.com/watch?v=eGxV_PGNpOg) and open the `extension.py` file.
 
@@ -30,25 +121,25 @@ From there, replace the code in `extension.py` with the code below:
 import omni.ext
 import omni.ui as ui
 
+# Step 7.1
+
+# Step 4.1
+
+# Step 4.2
+
+# Step 4.3
+
 # Step 6.1
 
-# Step 3.1
+    # Step 7.5
 
-# Step 3.2
+    # Step 6.2
 
-# Step 3.3
+        # Step 7.2
 
-# Step 5.1
+        # Step 7.3
 
-    # Step 6.5
-
-    # Step 5.2
-
-        # Step 6.2
-
-        # Step 6.3
-
-        # Step 6.4
+        # Step 7.4
 
 class OmniSampleExcel_connectionExtension(omni.ext.IExt):
     def on_startup(self, ext_id):
@@ -56,44 +147,44 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
-        # Step 2.1
+        # Step 3.1
 
-    # Step 2.2
+    # Step 3.2
 
-        # Step 4
+        # Step 5
 
-        # Step 6.6
+        # Step 7.6
         
-        # Step 7.1
-        
-        # Step 7.2
-
-    # Step 2.2
-
-        # Step 9
-
-    # Step 7.3
-
         # Step 8.1
         
         # Step 8.2
 
+    # Step 3.2
+
+        # Step 10
+
+    # Step 8.3
+
+        # Step 9.1
+        
+        # Step 9.2
+
     def on_shutdown(self):
-        # Step 9
+        # Step 10
         pass
 ```
 
 So far, the extension only contains comments with step numbers that correspond with the steps in this tutorial as well as the minimum code needed to launch an extension with a window. The `OmniSampleExcel_connectionExtension` class encapsulates the extension itself. The `on_startup` function runs when the extension is loaded. Currently, this function simply creates an empty window with `Excel Connection` as its title. 
 
-This serves as a roadmap for the rest of the tutorial. At each step we will add code to the marked location. After each major step, such as `Step 2` you can build and launch the extension to see your progress. After each minor step, such as `Step 5.1`, the code may be missing necessary elements to run.
+This serves as a roadmap for the rest of the tutorial. At each step we will add code to the marked location. After each major step, such as `Step 3` you can build and launch the extension to see your progress. After each minor step, such as `Step 6.1`, the code may be missing necessary elements to run.
 
 > **_Note_**: Your class name will depend on the name you gave your extension upon creation and will be different from the class name, `OmniSampleExcel_connectionExtension`, in this tutorial.
 
-## Step 2: Define The User Interface
+## Step 3: Define The User Interface
 
 Next we will build the user interface for the extension. 
 
-### Step 2.1: Add the UI Elements to `on_startup`
+### Step 3.1: Add the UI Elements to `on_startup`
 
 The first step is to add the following code below the assignment of `self._window` in the `on_startup` function:
 
@@ -115,17 +206,17 @@ with self._window.frame:
 
 Here is where visual parts of the user interface is built. You will see that there is a vertical stack which contains two horizontal stacks. This creates two rows in the user interface, and each row has two columns. The first row has a string field where the user can enter a path to the Excel spreadsheet they would like to connect to Omniverse. The second row has buttons that can connect or disconnect the given spreadsheet.
 
-### Step 2.2: Add the Button Clicked Functions
+### Step 3.2: Add the Button Clicked Functions
 
 Add the following Code block to your extension's class after the `on_startup` function:
 
 ```Python
 def on_Connect_Click(self):
-    # Step 4
+    # Step 5
     pass        
 
 def on_Disconnect_Click(self):
-    # Step 9
+    # Step 10
     pass
 ```
 
@@ -140,25 +231,25 @@ Saving the file at this point should launch the extension and let you see your p
 import omni.ext
 import omni.ui as ui
 
+# Step 7.1
+
+# Step 4.1
+
+# Step 4.2
+
+# Step 4.3
+
 # Step 6.1
 
-# Step 3.1
+    # Step 7.5
 
-# Step 3.2
+    # Step 6.2
 
-# Step 3.3
+        # Step 7.2
 
-# Step 5.1
+        # Step 7.3
 
-    # Step 6.5
-
-    # Step 5.2
-
-        # Step 6.2
-
-        # Step 6.3
-
-        # Step 6.4
+        # Step 7.4
 
 class OmniSampleExcel_connectionExtension(omni.ext.IExt):
     def on_startup(self, ext_id):
@@ -166,7 +257,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
-        # Step 2.1
+        # Step 3.1
         with self._window.frame:
             with ui.VStack():
 
@@ -181,30 +272,30 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                     ui.Button("Disconnect", clicked_fn=self.on_Disconnect_Click, width=300)
                     ui.Spacer()
 
-    # Step 2.2
+    # Step 3.2
     def on_Connect_Click(self):
-        # Step 4
+        # Step 5
 
-        # Step 6.6
+        # Step 7.6
         
-        # Step 7.1
-        
-        # Step 7.2
-        pass
-
-    # Step 2.2
-    def on_Disconnect_Click(self):
-        # Step 9
-        pass
-
-    # Step 7.3
-
         # Step 8.1
         
         # Step 8.2
+        pass
+
+    # Step 3.2
+    def on_Disconnect_Click(self):
+        # Step 10
+        pass
+
+    # Step 8.3
+
+        # Step 9.1
+        
+        # Step 9.2
 
     def on_shutdown(self):
-        # Step 9
+        # Step 10
         pass
 ```
 </details>
@@ -212,11 +303,11 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
 And so, with just a few lines of code the user interface for the Excel connector is complete. Next we will add the dependencies required to call the Excel API from within the extension. 
 
-## Step 3: Add the `Win32Com` Dependencies
+## Step 4: Add the `Win32Com` Dependencies
 
 Many applications have automation API libraries. These libraries come in a wide variety of languages and formats; this sample is helpful for any libraries that can be accessed from Python. If the libraries are Python libraries, which is common, this is very straightforward. While not quite as simple to import as Python libraries, .NET libraries can be brought in by using the `Python.NET library`. COM libraries are a bit trickier to use, which is one reason they were chosen for this tutorial. Hopefully demonstrating how to import COM libraries will serve as a head start for those who want to use Python, .NET, COM or other technologies.
 
-### Step 3.1: Import Pip Packages
+### Step 4.1: Import Pip Packages
 
 Add the following snippet to the top of your `extension.py` file below the current imports: 
     
@@ -229,7 +320,7 @@ This code snippet installs pip packages that are not distributed with NVIDIA Omn
 
 > **_Note_**: First-time pip installation of `pywin32` sometimes fails from within the Omniverse environment. If this happens copy the attempted pip command from the information-level console logs and run it in a command prompt.
 
-### Step 3.2: Configure the `pywin32` Environment
+### Step 4.2: Configure the `pywin32` Environment
 
 Add this snippet to your code below the last snippet:
 
@@ -257,7 +348,7 @@ carb.log_info(os.environ["PATH"])
 
 This step is less common when installing a package and probably will not be necessary unless you are working with COM APIs. In order to use the `win32com.client` library which is required to access COM APIs, a few environment variables must be set within the Omniverse environment. If you were to use `pywin32` in a local Python environment, you would first install the package and then run an installer that sets these environment variables. We cannot do this within the Omnviverse environment, so instead we install the library into the environment by hand. In the case that you are working with COM libraries and thus `pywin32`, you can reuse this exact snippet.
 
-### Step 3.3: Import `win32com.client`
+### Step 4.3: Import `win32com.client`
 
 Now that `pywin32` is completely installed, the next step is to import `win32com.client` which will give access to COM APIs. It is imported as follows:
 
@@ -275,14 +366,14 @@ Saving the file at this point should launch the extension and let you see your p
 import omni.ext
 import omni.ui as ui
 
-# Step 6.1
+# Step 7.1
 
-# Step 3.1
+# Step 4.1
 # In order to work with com you will need to import pywin32
 import omni.kit.pipapi
 omni.kit.pipapi.install("pywin32")
 
-# Step 3.2
+# Step 4.2
 # you also need to set the following environment variables to install pywin32
 import os
 import sys
@@ -303,21 +394,21 @@ os.environ["PATH"] = f"{dlls_path};{os.environ['PATH']}"
 carb.log_info(os.environ["PATH"])
 # End of pywin32 installation.
 
-# Step 3.3
+# Step 4.3
 # win32com.client lets you work with com libraries
 import win32com.client
 
-# Step 5.1
+# Step 6.1
 
-    # Step 6.5
+    # Step 7.5
 
-    # Step 5.2
+    # Step 6.2
 
-        # Step 6.2
+        # Step 7.2
 
-        # Step 6.3
+        # Step 7.3
 
-        # Step 6.4
+        # Step 7.4
 
 class OmniSampleExcel_connectionExtension(omni.ext.IExt):
     def on_startup(self, ext_id):
@@ -325,7 +416,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
-        # Step 2.1
+        # Step 3.1
         with self._window.frame:
             with ui.VStack():
 
@@ -340,30 +431,30 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                     ui.Button("Disconnect", clicked_fn=self.on_Disconnect_Click, width=300)
                     ui.Spacer()
 
-    # Step 2.2
+    # Step 3.2
     def on_Connect_Click(self):
-        # Step 4
+        # Step 5
 
-        # Step 6.6
+        # Step 7.6
         
-        # Step 7.1
-        
-        # Step 7.2
-        pass
-
-    # Step 2.2
-    def on_Disconnect_Click(self):
-        # Step 9
-        pass
-
-    # Step 7.3
-
         # Step 8.1
         
         # Step 8.2
+        pass
+
+    # Step 3.2
+    def on_Disconnect_Click(self):
+        # Step 10
+        pass
+
+    # Step 8.3
+
+        # Step 9.1
+        
+        # Step 9.2
 
     def on_shutdown(self):
-        # Step 9
+        # Step 10
         pass
 ```
 </details>
@@ -371,7 +462,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
 With that, all libraries needed to work with COM APIs have been installed and imported. In the next step we will use this library to access the Excel application.
 
-## Step 4: Connect to the Excel Application
+## Step 5: Connect to the Excel Application
 
 The sample connects to Excel in the `on_Connect_Click` function using the following snippet:
 
@@ -406,14 +497,14 @@ Saving the file at this point should launch the extension and let you see your p
 import omni.ext
 import omni.ui as ui
 
-# Step 6.1
+# Step 7.1
 
-# Step 3.1
+# Step 4.1
 # In order to work with com you will need to import pywin32
 import omni.kit.pipapi
 omni.kit.pipapi.install("pywin32")
 
-# Step 3.2
+# Step 4.2
 # you also need to set the following environment variables to install pywin32
 import os
 import sys
@@ -434,21 +525,21 @@ os.environ["PATH"] = f"{dlls_path};{os.environ['PATH']}"
 carb.log_info(os.environ["PATH"])
 # End of pywin32 installation.
 
-# Step 3.3
+# Step 4.3
 # win32com.client lets you work with com libraries
 import win32com.client
 
-# Step 5.1
+# Step 6.1
 
-    # Step 6.5
+    # Step 7.5
 
-    # Step 5.2
+    # Step 6.2
 
-        # Step 6.2
+        # Step 7.2
 
-        # Step 6.3
+        # Step 7.3
 
-        # Step 6.4
+        # Step 7.4
 
 class OmniSampleExcel_connectionExtension(omni.ext.IExt):
     def on_startup(self, ext_id):
@@ -456,7 +547,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
-        # Step 2.1
+        # Step 3.1
         with self._window.frame:
             with ui.VStack():
 
@@ -471,9 +562,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                     ui.Button("Disconnect", clicked_fn=self.on_Disconnect_Click, width=300)
                     ui.Spacer()
 
-    # Step 2.2
+    # Step 3.2
     def on_Connect_Click(self):
-        # Step 4
+        # Step 5
         # Link to Excel
         self._excel_app = win32com.client.DispatchEx("excel.application")
         self._excel_app.Visible = True
@@ -490,25 +581,25 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             carb.log_info("Could not find Worksheets attribute")
             return
 
-        # Step 6.6
+        # Step 7.6
         
-        # Step 7.1
-        
-        # Step 7.2
-
-    # Step 2.2
-    def on_Disconnect_Click(self):
-        # Step 9
-        pass
-
-    # Step 7.3
-
         # Step 8.1
         
         # Step 8.2
 
+    # Step 3.2
+    def on_Disconnect_Click(self):
+        # Step 10
+        pass
+
+    # Step 8.3
+
+        # Step 9.1
+        
+        # Step 9.2
+
     def on_shutdown(self):
-        # Step 9
+        # Step 10
         pass
 ```
 </details>
@@ -516,7 +607,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
 Now that the extension can open the Excel spreadsheet, the next section will explain how to subscribe to changes from Excel.
 
-## Step 5: Prepare to Subscribe to Changes from Excel
+## Step 6: Prepare to Subscribe to Changes from Excel
 
 If you have done Excel automation with VBA, you have probably used the `Worksheet_Change` function to perform actions whenever a user edits a worksheet. We do the same thing in this sample in four steps. First, identify the class and event name you would like to subscribe to. In the case of Excel we can use the VBA object browser to do this. For this sample, we want to listen for changes to a worksheet. We find the `Worksheet` class and if you look there is a `Change` event as shown in the image below:
 
@@ -529,7 +620,7 @@ If you have done Excel automation with VBA, you have probably used the `Workshee
     </figure>
 </center>
 
-### Step 5.1: Create The Event Subscription Class
+### Step 6.1: Create The Event Subscription Class
 
 Add the following class definition to `extension.py` above your extension's class:
 
@@ -539,7 +630,7 @@ class WorksheetEvents:
 
 Please note that the class has the same name as the class we want to subscribe to plus the `Events` appended to it, in this case `WorksheetEvents`. This is not required but is a recommended convention.
 
-### Step 5.2: Create The Event Subscription Function
+### Step 6.2: Create The Event Subscription Function
 
  Next add the following function to the `WorksheetEvents` class:
 
@@ -559,14 +650,14 @@ Saving the file at this point should launch the extension and let you see your p
 import omni.ext
 import omni.ui as ui
 
-# Step 6.1
+# Step 7.1
 
-# Step 3.1
+# Step 4.1
 # In order to work with com you will need to import pywin32
 import omni.kit.pipapi
 omni.kit.pipapi.install("pywin32")
 
-# Step 3.2
+# Step 4.2
 # you also need to set the following environment variables to install pywin32
 import os
 import sys
@@ -587,24 +678,24 @@ os.environ["PATH"] = f"{dlls_path};{os.environ['PATH']}"
 carb.log_info(os.environ["PATH"])
 # End of pywin32 installation.
 
-# Step 3.3
+# Step 4.3
 # win32com.client lets you work with com libraries
 import win32com.client
 
-# Step 5.1
+# Step 6.1
 # This class mirrors the events in the com dll you would like to subscribe to
 class WorksheetEvents:
 
-    # Step 6.5
+    # Step 7.5
 
-    # Step 5.2
+    # Step 6.2
     def OnChange(self, *args):
 
-        # Step 6.2
+        # Step 7.2
 
-        # Step 6.3
+        # Step 7.3
 
-        # Step 6.4
+        # Step 7.4
         pass
 
 class OmniSampleExcel_connectionExtension(omni.ext.IExt):
@@ -613,7 +704,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
-        # Step 2.1
+        # Step 3.1
         with self._window.frame:
             with ui.VStack():
 
@@ -628,9 +719,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                     ui.Button("Disconnect", clicked_fn=self.on_Disconnect_Click, width=300)
                     ui.Spacer()
 
-    # Step 2.2
+    # Step 3.2
     def on_Connect_Click(self):
-        # Step 4
+        # Step 5
         # Link to Excel
         self._excel_app = win32com.client.DispatchEx("excel.application")
         self._excel_app.Visible = True
@@ -647,32 +738,32 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             carb.log_info("Could not find Worksheets attribute")
             return
 
-        # Step 6.6
+        # Step 7.6
         
-        # Step 7.1
-        
-        # Step 7.2
-
-    # Step 2.2
-    def on_Disconnect_Click(self):
-        # Step 9
-        pass
-
-    # Step 7.3
-
         # Step 8.1
         
         # Step 8.2
 
+    # Step 3.2
+    def on_Disconnect_Click(self):
+        # Step 10
+        pass
+
+    # Step 8.3
+
+        # Step 9.1
+        
+        # Step 9.2
+
     def on_shutdown(self):
-        # Step 9
+        # Step 10
         pass
 ```
 </details>
 
-## Step 6: Respond to Changes from Excel
+## Step 7: Respond to Changes from Excel
 
-### Step 6.1: Import Prerequisite Libraries
+### Step 7.1: Import Prerequisite Libraries
 
 First, add the following imports to the top of the `extension.py`:
 
@@ -689,7 +780,7 @@ with those libraries imported, we will now perform the following steps in the `O
 2. Get the prim that has changed
 3. Move the prim that has changed
 
-### Step 6.2: Check Changed Address
+### Step 7.2: Check Changed Address
 
 The first step is to check whether the address of the changed cell is one we are tracking. Add the following snippet to your `OnChange` function.
 
@@ -706,7 +797,7 @@ except Exception as e:
 
 In this snippet we create a regular expression that will match cell addresses that contain tracked prims and then check whether the changed address matches that pattern. If it does not match we do not continue any further. 
 
-### Step 6.3: Get the Prim
+### Step 7.3: Get the Prim
 
 The following snippet gets the prim from the `USD` scene and goes in your `OnChange` function next: 
 
@@ -727,7 +818,7 @@ The second step is to find the prim path that has been effected by the change. T
 
 The row is taken from the event argment and appended to the column containing the prim path. Then, the value of that cell is read and that string is used within the Omniverse stage to retrieve the prim. It is important to check whether the prim is valid before continuing, because it is very easy to make a mistake when working with prim paths.
 
-### Step 6.4: Move the Prim
+### Step 7.4: Move the Prim
 
 Finally, we will move the prim to its new location by adding this snippet to your `OnChange` function:
 
@@ -746,7 +837,7 @@ prim.GetAttribute("xformOp:translate").Set(translate)
 
 First, read the new position from Excel. Second read the current position from Omniverse. Third assign the new value from Excel to the Omniverse Translation vector and finally, write the new translation vector back to Omniverse.
 
-### Step 6.5: Add `_excel_worksheet` to `WorksheetEvents`
+### Step 7.5: Add `_excel_worksheet` to `WorksheetEvents`
 
 Add this variable to the `WorksheetEvents` class:
 
@@ -756,7 +847,7 @@ _excel_worksheet = None
 
 This variable has been added so that the connected Excel spreadsheet can be accessed from within the event function. 
 
-### Step 6.6: Subscribe to Excel Changes
+### Step 7.6: Subscribe to Excel Changes
 
 Add the following two lines of code to the `on_Connect_Click` function:
 
@@ -776,16 +867,16 @@ This is a great point to pause and check your work. You should be able to launch
 import omni.ext
 import omni.ui as ui
 
-# Step 6.1
+# Step 7.1
 import omni.usd
 import re
 
-# Step 3.1
+# Step 4.1
 # In order to work with com you will need to import pywin32
 import omni.kit.pipapi
 omni.kit.pipapi.install("pywin32")
 
-# Step 3.2
+# Step 4.2
 # you also need to set the following environment variables to install pywin32
 import os
 import sys
@@ -806,21 +897,21 @@ os.environ["PATH"] = f"{dlls_path};{os.environ['PATH']}"
 carb.log_info(os.environ["PATH"])
 # End of pywin32 installation.
 
-# Step 3.3
+# Step 4.3
 # win32com.client lets you work with com libraries
 import win32com.client
 
-# Step 5.1
+# Step 6.1
 # This class mirrors the events in the com dll you would like to subscribe to
 class WorksheetEvents:
 
-    # Step 6.5
+    # Step 7.5
     _excel_worksheet = None
 
-    # Step 5.2
+    # Step 6.2
     def OnChange(self, *args):
 
-        # Step 6.2
+        # Step 7.2
         # check if changed cell is one we are tracking
         try:
             address_pattern = r'\$[DE]\$[3456]'
@@ -830,7 +921,7 @@ class WorksheetEvents:
         except Exception as e:
             carb.log_error('Could not detect cell changes' + e)
 
-        # Step 6.3
+        # Step 7.3
         # get prim path from excel
         prim_path_cell_address = r"C" + address[3]
         prim_path = WorksheetEvents._excel_worksheet.Range(prim_path_cell_address).Value
@@ -842,7 +933,7 @@ class WorksheetEvents:
             carb.log_error("Can't find prim at path")
             return
 
-        # Step 6.4
+        # Step 7.4
         # move prim to new coordinates        
         new_value = WorksheetEvents._excel_worksheet.Range(address).Value
 
@@ -860,7 +951,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
-        # Step 2.1
+        # Step 3.1
         with self._window.frame:
             with ui.VStack():
 
@@ -875,9 +966,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                     ui.Button("Disconnect", clicked_fn=self.on_Disconnect_Click, width=300)
                     ui.Spacer()
 
-    # Step 2.2
+    # Step 3.2
     def on_Connect_Click(self):
-        # Step 4
+        # Step 5
         # Link to Excel
         self._excel_app = win32com.client.DispatchEx("excel.application")
         self._excel_app.Visible = True
@@ -894,27 +985,27 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             carb.log_info("Could not find Worksheets attribute")
             return
 
-        # Step 6.6
+        # Step 7.6
         WorksheetEvents._excel_worksheet = self._excel_worksheet
         self._excel_events = win32com.client.WithEvents(self._excel_worksheet, WorksheetEvents)
         
-        # Step 7.1
-        
-        # Step 7.2
-
-    # Step 2.2
-    def on_Disconnect_Click(self):
-        # Step 9
-        pass
-
-    # Step 7.3
-
         # Step 8.1
         
         # Step 8.2
 
+    # Step 3.2
+    def on_Disconnect_Click(self):
+        # Step 10
+        pass
+
+    # Step 8.3
+
+        # Step 9.1
+        
+        # Step 9.2
+
     def on_shutdown(self):
-        # Step 9
+        # Step 10
         pass
 ```
 </details>
@@ -922,9 +1013,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
 In the next section we will subscribe to Omniverse changes so that we can get data flowing back in the other direction. 
 
-## Step 7: Subscribe to Changes from Omniverse
+## Step 8: Subscribe to Changes from Omniverse
 
-### Step 7.1 : Subscribe to Changes from Your First Prim
+### Step 8.1 : Subscribe to Changes from Your First Prim
 
 Working with Omniverse in Python is more straightforward than working with COM APIs in Python because Omniverse was designed to work with Python. In Omniverse we can deliberately subscribe to changes in a specific prim attribute as shown below:
 
@@ -944,7 +1035,7 @@ if self.prim_1.IsValid():
         
 In this snippet, the first prim listed in the Excel spreadsheet is retrieved. If the prim is valid, its translate attribute is assigned to a variable and then a watcher is set that listens for any changes to that attribute. 
 
-### Step 7.2 : Subscribe to Changes from Remaining Prims
+### Step 8.2 : Subscribe to Changes from Remaining Prims
 
 This is then done for the other three pallets in the Excel spreadsheet:
 
@@ -974,7 +1065,7 @@ if self.prim_4.IsValid():
         )
 ```
 
-### Step 7.3 : Add the Callback Function
+### Step 8.3 : Add the Callback Function
 
 Don't forget to create the `_translate_changed` function which is called when one of these prims is changed:
 
@@ -992,16 +1083,16 @@ Saving the file at this point should launch the extension and let you see your p
 import omni.ext
 import omni.ui as ui
 
-# Step 6.1
+# Step 7.1
 import omni.usd
 import re
 
-# Step 3.1
+# Step 4.1
 # In order to work with com you will need to import pywin32
 import omni.kit.pipapi
 omni.kit.pipapi.install("pywin32")
 
-# Step 3.2
+# Step 4.2
 # you also need to set the following environment variables to install pywin32
 import os
 import sys
@@ -1022,21 +1113,21 @@ os.environ["PATH"] = f"{dlls_path};{os.environ['PATH']}"
 carb.log_info(os.environ["PATH"])
 # End of pywin32 installation.
 
-# Step 3.3
+# Step 4.3
 # win32com.client lets you work with com libraries
 import win32com.client
 
-# Step 5.1
+# Step 6.1
 # This class mirrors the events in the com dll you would like to subscribe to
 class WorksheetEvents:
 
-    # Step 6.5
+    # Step 7.5
     _excel_worksheet = None
 
-    # Step 5.2
+    # Step 6.2
     def OnChange(self, *args):
 
-        # Step 6.2
+        # Step 7.2
         # check if changed cell is one we are tracking
         try:
             address_pattern = r'\$[DE]\$[3456]'
@@ -1046,7 +1137,7 @@ class WorksheetEvents:
         except Exception as e:
             carb.log_error('Could not detect cell changes' + e)
 
-        # Step 6.3
+        # Step 7.3
         # get prim path from excel
         prim_path_cell_address = r"C" + address[3]
         prim_path = WorksheetEvents._excel_worksheet.Range(prim_path_cell_address).Value
@@ -1058,7 +1149,7 @@ class WorksheetEvents:
             carb.log_error("Can't find prim at path")
             return
 
-        # Step 6.4
+        # Step 7.4
         # move prim to new coordinates        
         new_value = WorksheetEvents._excel_worksheet.Range(address).Value
 
@@ -1076,7 +1167,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
-        # Step 2.1
+        # Step 3.1
         with self._window.frame:
             with ui.VStack():
 
@@ -1091,9 +1182,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                     ui.Button("Disconnect", clicked_fn=self.on_Disconnect_Click, width=300)
                     ui.Spacer()
 
-    # Step 2.2
+    # Step 3.2
     def on_Connect_Click(self):
-        # Step 4
+        # Step 5
         # Link to Excel
         self._excel_app = win32com.client.DispatchEx("excel.application")
         self._excel_app.Visible = True
@@ -1110,11 +1201,11 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             carb.log_info("Could not find Worksheets attribute")
             return
 
-        # Step 6.6
+        # Step 7.6
         WorksheetEvents._excel_worksheet = self._excel_worksheet
         self._excel_events = win32com.client.WithEvents(self._excel_worksheet, WorksheetEvents)
         
-        # Step 7.1
+        # Step 8.1
         # Link to Scene
         self._stage = omni.usd.get_context().get_stage()
         
@@ -1125,7 +1216,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             translate_attr = self.prim_1.GetAttribute("xformOp:translate")
             self.watcher1 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
         
-        # Step 7.2
+        # Step 8.2
         self.prim_2 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C4').Value)
         if self.prim_2.IsValid():
             translate_attr = self.prim_2.GetAttribute("xformOp:translate")
@@ -1141,20 +1232,20 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             translate_attr = self.prim_4.GetAttribute("xformOp:translate")
             self.watcher4 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
 
-    # Step 2.2
+    # Step 3.2
     def on_Disconnect_Click(self):
-        # Step 9
+        # Step 10
         pass
 
-    # Step 7.3
+    # Step 8.3
     def _translate_changed(self, *args):
-        # Step 8.1
+        # Step 9.1
         
-        # Step 8.2
+        # Step 9.2
         pass
 
     def on_shutdown(self):
-        # Step 9
+        # Step 10
         pass
 ```
 </details>
@@ -1162,14 +1253,14 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
 With the subscription made, the next step in the tutorial is to respond to changes that come from Omniverse and update Excel.
 
-## Step 8: Respond to Changes from Omniverse
+## Step 9: Respond to Changes from Omniverse
 
 Responding to changes from Omniverse follows two steps:
 
 1. Check if the translation value has changed
 2. Update the values in Excel
 
-### Step 8.1 : Check if the Values have Changed
+### Step 9.1 : Check if the Values have Changed
 
 Add this snippet to the `_translate_changed` function:
 
@@ -1208,7 +1299,7 @@ This code snippet first gets the translate value as well as the prim path from t
 
 > **_Note_**: It is critical with any bi-directional connection such as this that at some point you check whether values have actually changed. If you do not do this, the connector will enter an infinite loop.
 
-### Step 8.2 : Update Excel
+### Step 9.2 : Update Excel
 
 If either of the values is different, the code continues with the following snippet:
 
@@ -1229,16 +1320,16 @@ Saving the file at this point should launch the extension and let you see your p
 import omni.ext
 import omni.ui as ui
 
-# Step 6.1
+# Step 7.1
 import omni.usd
 import re
 
-# Step 3.1
+# Step 4.1
 # In order to work with com you will need to import pywin32
 import omni.kit.pipapi
 omni.kit.pipapi.install("pywin32")
 
-# Step 3.2
+# Step 4.2
 # you also need to set the following environment variables to install pywin32
 import os
 import sys
@@ -1259,21 +1350,21 @@ os.environ["PATH"] = f"{dlls_path};{os.environ['PATH']}"
 carb.log_info(os.environ["PATH"])
 # End of pywin32 installation.
 
-# Step 3.3
+# Step 4.3
 # win32com.client lets you work with com libraries
 import win32com.client
 
-# Step 5.1
+# Step 6.1
 # This class mirrors the events in the com dll you would like to subscribe to
 class WorksheetEvents:
 
-    # Step 6.5
+    # Step 7.5
     _excel_worksheet = None
 
-    # Step 5.2
+    # Step 6.2
     def OnChange(self, *args):
 
-        # Step 6.2
+        # Step 7.2
         # check if changed cell is one we are tracking
         try:
             address_pattern = r'\$[DE]\$[3456]'
@@ -1283,7 +1374,7 @@ class WorksheetEvents:
         except Exception as e:
             carb.log_error('Could not detect cell changes' + e)
 
-        # Step 6.3
+        # Step 7.3
         # get prim path from excel
         prim_path_cell_address = r"C" + address[3]
         prim_path = WorksheetEvents._excel_worksheet.Range(prim_path_cell_address).Value
@@ -1295,7 +1386,7 @@ class WorksheetEvents:
             carb.log_error("Can't find prim at path")
             return
 
-        # Step 6.4
+        # Step 7.4
         # move prim to new coordinates        
         new_value = WorksheetEvents._excel_worksheet.Range(address).Value
 
@@ -1313,7 +1404,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
-        # Step 2.1
+        # Step 3.1
         with self._window.frame:
             with ui.VStack():
 
@@ -1328,9 +1419,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                     ui.Button("Disconnect", clicked_fn=self.on_Disconnect_Click, width=300)
                     ui.Spacer()
 
-    # Step 2.2
+    # Step 3.2
     def on_Connect_Click(self):
-        # Step 4
+        # Step 5
         # Link to Excel
         self._excel_app = win32com.client.DispatchEx("excel.application")
         self._excel_app.Visible = True
@@ -1347,11 +1438,11 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             carb.log_info("Could not find Worksheets attribute")
             return
 
-        # Step 6.6
+        # Step 7.6
         WorksheetEvents._excel_worksheet = self._excel_worksheet
         self._excel_events = win32com.client.WithEvents(self._excel_worksheet, WorksheetEvents)
         
-        # Step 7.1
+        # Step 8.1
         # Link to Scene
         self._stage = omni.usd.get_context().get_stage()
         
@@ -1362,7 +1453,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             translate_attr = self.prim_1.GetAttribute("xformOp:translate")
             self.watcher1 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
         
-        # Step 7.2
+        # Step 8.2
         self.prim_2 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C4').Value)
         if self.prim_2.IsValid():
             translate_attr = self.prim_2.GetAttribute("xformOp:translate")
@@ -1378,14 +1469,14 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             translate_attr = self.prim_4.GetAttribute("xformOp:translate")
             self.watcher4 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
 
-    # Step 2.2
+    # Step 3.2
     def on_Disconnect_Click(self):
-        # Step 9
+        # Step 10
         pass
 
-    # Step 7.3
+    # Step 8.3
     def _translate_changed(self, *args):
-        # Step 8.1
+        # Step 9.1
         # Check if the translation in excel is different
         translate_attribute = self._stage.GetAttributeAtPath(args[0])
         translate = translate_attribute.Get()
@@ -1415,18 +1506,18 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
         if excel_x == translate[0] and excel_y == translate[1]:
             return
 
-        # Step 8.2
+        # Step 9.2
         # If so change it.
         self._excel_worksheet.Range(x_address).Value = translate[0]
         self._excel_worksheet.Range(y_address).Value = translate[1]
 
     def on_shutdown(self):
-        # Step 9
+        # Step 10
         pass
 ```
 </details>
 
-## Step 9: Disconnect from Excel
+## Step 10: Disconnect from Excel
 
 Finally, add this code to both the `on_Disconnect_Click` function and the `on_shutdown` function: 
 
@@ -1456,16 +1547,16 @@ Saving the file at this point should launch the extension and let you use the co
 import omni.ext
 import omni.ui as ui
 
-# Step 6.1
+# Step 7.1
 import omni.usd
 import re
 
-# Step 3.1
+# Step 4.1
 # In order to work with com you will need to import pywin32
 import omni.kit.pipapi
 omni.kit.pipapi.install("pywin32")
 
-# Step 3.2
+# Step 4.2
 # you also need to set the following environment variables to install pywin32
 import os
 import sys
@@ -1486,21 +1577,21 @@ os.environ["PATH"] = f"{dlls_path};{os.environ['PATH']}"
 carb.log_info(os.environ["PATH"])
 # End of pywin32 installation.
 
-# Step 3.3
+# Step 4.3
 # win32com.client lets you work with com libraries
 import win32com.client
 
-# Step 5.1
+# Step 6.1
 # This class mirrors the events in the com dll you would like to subscribe to
 class WorksheetEvents:
 
-    # Step 6.5
+    # Step 7.5
     _excel_worksheet = None
 
-    # Step 5.2
+    # Step 6.2
     def OnChange(self, *args):
 
-        # Step 6.2
+        # Step 7.2
         # check if changed cell is one we are tracking
         try:
             address_pattern = r'\$[DE]\$[3456]'
@@ -1510,7 +1601,7 @@ class WorksheetEvents:
         except Exception as e:
             carb.log_error('Could not detect cell changes' + e)
 
-        # Step 6.3
+        # Step 7.3
         # get prim path from excel
         prim_path_cell_address = r"C" + address[3]
         prim_path = WorksheetEvents._excel_worksheet.Range(prim_path_cell_address).Value
@@ -1522,7 +1613,7 @@ class WorksheetEvents:
             carb.log_error("Can't find prim at path")
             return
 
-        # Step 6.4
+        # Step 7.4
         # move prim to new coordinates        
         new_value = WorksheetEvents._excel_worksheet.Range(address).Value
 
@@ -1540,7 +1631,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
 
         self._window = ui.Window("Excel Connection", width=600, height=200)
 
-        # Step 2.1
+        # Step 3.1
         with self._window.frame:
             with ui.VStack():
 
@@ -1555,9 +1646,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                     ui.Button("Disconnect", clicked_fn=self.on_Disconnect_Click, width=300)
                     ui.Spacer()
 
-    # Step 2.2
+    # Step 3.2
     def on_Connect_Click(self):
-        # Step 4
+        # Step 5
         # Link to Excel
         self._excel_app = win32com.client.DispatchEx("excel.application")
         self._excel_app.Visible = True
@@ -1574,11 +1665,11 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             carb.log_info("Could not find Worksheets attribute")
             return
 
-        # Step 6.6
+        # Step 7.6
         WorksheetEvents._excel_worksheet = self._excel_worksheet
         self._excel_events = win32com.client.WithEvents(self._excel_worksheet, WorksheetEvents)
         
-        # Step 7.1
+        # Step 8.1
         # Link to Scene
         self._stage = omni.usd.get_context().get_stage()
         
@@ -1589,7 +1680,7 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             translate_attr = self.prim_1.GetAttribute("xformOp:translate")
             self.watcher1 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
         
-        # Step 7.2
+        # Step 8.2
         self.prim_2 = self._stage.GetPrimAtPath(self._excel_worksheet.Range('C4').Value)
         if self.prim_2.IsValid():
             translate_attr = self.prim_2.GetAttribute("xformOp:translate")
@@ -1605,9 +1696,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
             translate_attr = self.prim_4.GetAttribute("xformOp:translate")
             self.watcher4 = watcher.subscribe_to_change_info_path(translate_attr.GetPath(), self._translate_changed)
 
-    # Step 2.2
+    # Step 3.2
     def on_Disconnect_Click(self):
-        # Step 9
+        # Step 10
         self._excel_events = None
         self._excel_worksheet = None
 
@@ -1621,9 +1712,9 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
                 self._excel_app.Application.Quit()
                 self._excel_app = None
 
-    # Step 7.3
+    # Step 8.3
     def _translate_changed(self, *args):
-        # Step 8.1
+        # Step 9.1
         # Check if the translation in excel is different
         translate_attribute = self._stage.GetAttributeAtPath(args[0])
         translate = translate_attribute.Get()
@@ -1653,13 +1744,13 @@ class OmniSampleExcel_connectionExtension(omni.ext.IExt):
         if excel_x == translate[0] and excel_y == translate[1]:
             return
 
-        # Step 8.2
+        # Step 9.2
         # If so change it.
         self._excel_worksheet.Range(x_address).Value = translate[0]
         self._excel_worksheet.Range(y_address).Value = translate[1]
 
     def on_shutdown(self):
-        # Step 9
+        # Step 10
         self._excel_events = None
         self._excel_worksheet = None
 
